@@ -2785,8 +2785,10 @@ static int wolfssl_pk_generate_keys_ed25519(unsigned int curve,
     }
 
     /* Export public and private key into buffers. */
+    PRIVATE_KEY_UNLOCK();
     ret = wc_ed25519_export_key(&ed25519, params->raw_priv.data, &privSz,
         params->raw_pub.data, &pubSz);
+    PRIVATE_KEY_LOCK();
     /* wolfSSL Ed25519 object no longer needed. */
     wc_ed25519_free(&ed25519);
     if (ret != 0) {
@@ -2888,8 +2890,10 @@ static int wolfssl_pk_generate_keys_ed448(unsigned int curve,
     }
 
     /* Export public and private key into buffers. */
+    PRIVATE_KEY_UNLOCK();
     ret = wc_ed448_export_key(&ed448, params->raw_priv.data, &privSz,
         params->raw_pub.data, &pubSz);
+    PRIVATE_KEY_LOCK();
     wc_ed448_free(&ed448);
     if (ret != 0) {
         WGW_WOLFSSL_ERROR("wc_ed448_export_key", ret);
